@@ -1,7 +1,29 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import styles from "./hero.module.css";
 
+export const loadTelegram = () => {
+  return new Promise<(opts: any) => void>((resolve, reject) => {
+    if ((globalThis as any).Telegram) {
+      return resolve((globalThis as any).Telegram as any);
+    }
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-web-app.js";
+    script.onload = () =>
+      // console.log(globalThis.Telegram.WebApp.ready);
+      resolve((globalThis as any).Telegram as any);
+
+    // tele.ready();
+
+    script.onerror = reject;
+    document.head.appendChild(script);
+    script.remove();
+  });
+};
+
 export default component$(() => {
+  useVisibleTask$(() => {
+    loadTelegram();
+  });
   return (
     <div class={["container", styles.hero]}>
       <h1>
@@ -13,26 +35,10 @@ export default component$(() => {
       <div class={styles["button-group"]}>
         <button
           onClick$={async () => {
-            function loadTelegram() {
-              return new Promise<(opts: any) => void>((resolve, reject) => {
-                if ((globalThis as any).Telegram) {
-                  return resolve((globalThis as any).Telegram as any);
-                }
-                const script = document.createElement("script");
-                script.src = "https://telegram.org/js/telegram-web-app.js";
-                script.onload = () =>
-                  console.log(globalThis.Telegram.WebApp.ready);
-                resolve((globalThis as any).Telegram as any);
-
-                // tele.ready();
-
-                script.onerror = reject;
-                document.head.appendChild(script);
-                script.remove();
-              });
-            }
-
-            loadTelegram();
+            const tele = window.Telegram.WebApp;
+            tele.MainButton.text = "we made uit";
+            tele.MainButton.show();
+            console.log(tele);
           }}
         >
           Time to celebrate
