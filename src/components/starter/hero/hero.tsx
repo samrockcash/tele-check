@@ -27,7 +27,7 @@ export default component$(() => {
   return (
     <div class={["container", styles.hero]}>
       <h1>
-        So <span class="highlight">fantastic</span>
+        So <span class="highlight">fucking fantastic!!!</span>
         <br />
         to have <span class="highlight">you</span> here
       </h1>
@@ -48,7 +48,7 @@ export default component$(() => {
           target="_blank"
           class="button button-dark"
         >
-          Explore the docs
+          Explore da docs
         </a>
       </div>
     </div>
