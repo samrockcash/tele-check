@@ -11,7 +11,7 @@ export const loadTelegram = () => {
     script.onload = () =>
       // console.log(globalThis.Telegram.WebApp.ready);
       resolve((globalThis as any).Telegram as any);
-
+    console.log("TELEGRAM AVALAIVLE?????");
     // tele.ready();
 
     script.onerror = reject;
@@ -22,7 +22,8 @@ export const loadTelegram = () => {
 
 export default component$(() => {
   useVisibleTask$(() => {
-    loadTelegram();
+    // loadTelegram();
+    console.log("HELLO CONSOLE");
   });
   return (
     <div class={["container", styles.hero]}>
@@ -33,16 +34,7 @@ export default component$(() => {
       </h1>
       <p>Have fun building your App with Qwik.</p>
       <div class={styles["button-group"]}>
-        <button
-          onClick$={async () => {
-            const tele = window.Telegram.WebApp;
-            tele.MainButton.text = "we made uit";
-            tele.MainButton.show();
-            console.log(tele);
-          }}
-        >
-          Time to celebrate
-        </button>
+        <button onClick$={async () => loadTelegram()}>Time to celebrate</button>
         <a
           href="https://qwik.builder.io/docs"
           target="_blank"
