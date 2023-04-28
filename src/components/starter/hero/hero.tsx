@@ -1,4 +1,4 @@
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useVisibleTask$, useSignal } from "@builder.io/qwik";
 import styles from "./hero.module.css";
 
 export const loadTelegram = () => {
@@ -11,7 +11,7 @@ export const loadTelegram = () => {
     script.onload = () =>
       // console.log(globalThis.Telegram.WebApp.ready);
       resolve((globalThis as any).Telegram as any);
-    console.log("TELEGRAM AVALAIVLE?????");
+    console.log("TELEGRAM LOADED!!!!!");
     // tele.ready();
 
     script.onerror = reject;
@@ -20,10 +20,13 @@ export const loadTelegram = () => {
   });
 };
 
+export const handleShowButton = (show: boolean) => (show ? true : false);
+
 export default component$(() => {
+  const showButton = useSignal(false);
+
   useVisibleTask$(() => {
-    // loadTelegram();
-    console.log("HELLO CONSOLE");
+    loadTelegram();
   });
   return (
     <div class={["container", styles.hero]}>
@@ -34,7 +37,20 @@ export default component$(() => {
       </h1>
       <p>Have fun building your App with Qwik.</p>
       <div class={styles["button-group"]}>
-        <button onClick$={async () => loadTelegram()}>Time to celebrate</button>
+        <button
+          onClick$={async () => {
+            // console.log(window.Telegram.WebApp.MainButton.show());
+            const btn = window.Telegram.WebApp.MainButton;
+
+            showButton.value = !showButton.value;
+            // console.log(showButton);
+            showButton.value
+              ? btn.show() //console.log("btn.show()")
+              : btn.hide(); //console.log("btn.hide()");
+          }}
+        >
+          Show Button on Telegram
+        </button>
         <a
           href="https://qwik.builder.io/docs"
           target="_blank"
